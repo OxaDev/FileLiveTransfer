@@ -53,7 +53,6 @@
             StartButton = new Button();
             StopButton = new Button();
             SaveConfigButton = new Button();
-            CleanMemoryButton = new Button();
             groupBox3 = new GroupBox();
             LoggerRTB = new RichTextBox();
             groupBox1.SuspendLayout();
@@ -85,7 +84,7 @@
             TimerValueCB.DropDownStyle = ComboBoxStyle.DropDownList;
             TimerValueCB.FormattingEnabled = true;
             TimerValueCB.Items.AddRange(new object[] { "seconde(s)", "minute(s)", "heure(s)" });
-            TimerValueCB.Location = new Point(405, 75);
+            TimerValueCB.Location = new Point(452, 75);
             TimerValueCB.Name = "TimerValueCB";
             TimerValueCB.Size = new Size(99, 23);
             TimerValueCB.TabIndex = 15;
@@ -101,7 +100,7 @@
             // 
             // TimeTB
             // 
-            TimeTB.Location = new Point(359, 75);
+            TimeTB.Location = new Point(406, 75);
             TimeTB.Name = "TimeTB";
             TimeTB.Size = new Size(40, 23);
             TimeTB.TabIndex = 13;
@@ -301,16 +300,6 @@
             SaveConfigButton.UseVisualStyleBackColor = true;
             SaveConfigButton.Click += SaveConfigButton_Click;
             // 
-            // CleanMemoryButton
-            // 
-            CleanMemoryButton.Location = new Point(226, 360);
-            CleanMemoryButton.Name = "CleanMemoryButton";
-            CleanMemoryButton.Size = new Size(134, 23);
-            CleanMemoryButton.TabIndex = 5;
-            CleanMemoryButton.Text = "Nettoyer la mémoire";
-            CleanMemoryButton.UseVisualStyleBackColor = true;
-            CleanMemoryButton.Click += CleanMemoryButton_Click;
-            // 
             // groupBox3
             // 
             groupBox3.Controls.Add(LoggerRTB);
@@ -337,7 +326,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(815, 720);
             Controls.Add(groupBox3);
-            Controls.Add(CleanMemoryButton);
             Controls.Add(SaveConfigButton);
             Controls.Add(StopButton);
             Controls.Add(StartButton);
@@ -379,7 +367,6 @@
         private Label label3;
         private TextBox TimeTB;
         private Button SaveConfigButton;
-        private Button CleanMemoryButton;
         private GroupBox groupBox3;
         private RichTextBox LoggerRTB;
     }

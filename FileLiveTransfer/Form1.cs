@@ -330,7 +330,7 @@ namespace FileLiveTransfer
 
                         if (fileExists)
                         {
-                            DebugLog("--- Le fichier '"+fileName+"' existe déjà sur le répertoire distant");
+                            DebugLog("--- Le fichier '" + fileName + "' existe déjà sur le répertoire distant");
                         }
                         else
                         {
@@ -366,7 +366,7 @@ namespace FileLiveTransfer
             TimeTB.Enabled = true;
             CheminSourceTB.Enabled = true;
             switchMode();
-            
+
         }
 
         private void CleanMemoryButton_Click(object sender, EventArgs e)
