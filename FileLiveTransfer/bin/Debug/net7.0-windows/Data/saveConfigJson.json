@@ -1,0 +1,12 @@
+{
+"TimerValueTB":3,
+"TimerValueCB":0,
+"DossierSourceTB":"D:\\Alexandre\\BricABrac\\Divers\\Coding\\FileLiveTransfer\\TestSourceDirectory",
+"DossierLocalDestTB":"D:\\Alexandre\\BricABrac\\Divers\\Coding\\FileLiveTransfer\\TestDestDirectory",
+"HostSFTPTB":"",
+"UsernameSFTPTB":"",
+"PasswordSFTPTB":"",
+"PortSFTPTB":"",
+"PathSFTPTB":"",
+"TypeRB":0
+}
