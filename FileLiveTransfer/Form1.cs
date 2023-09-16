@@ -176,7 +176,7 @@ namespace FileLiveTransfer
             CheminDestTB.Enabled = state;
         }
 
-        private void NasDistanceRB_CheckedChanged(object sender, EventArgs e)
+        private void switchMode()
         {
             if (NasDistanceRB.Checked) // Si l'utilisateur souhaite envoyer les fichiers dans un NAS
             {
@@ -199,6 +199,11 @@ namespace FileLiveTransfer
             }
         }
 
+        private void NasDistanceRB_CheckedChanged(object sender, EventArgs e)
+        {
+            switchMode();
+        }
+
         private void SaveConfigButton_Click(object sender, EventArgs e)
         {
             string executablePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -210,6 +215,15 @@ namespace FileLiveTransfer
             StopButton.Enabled = true;
             StartButton.Enabled = false;
             StartCheckingFiles();
+
+            changeTextBoxLocal(false);
+            changeTextBoxNAS(false);
+
+            NasDistanceRB.Enabled = false;
+            LocalRB.Enabled = false;
+            TimerValueCB.Enabled = false;
+            TimeTB.Enabled = false;
+            CheminSourceTB.Enabled = false;
         }
 
         private void StartCheckingFiles()
@@ -252,8 +266,15 @@ namespace FileLiveTransfer
                 {
                     // On rajoute le fichier qu'on vient d'envoyer dans une liste pour ne pas le renvoyer au prochain check
                     this.alreadySentFiles.Add(fileName);
-                    String destinationPath = Path.Combine(CheminDestTB.Text, fileName); // Créer le chemin de destination complet
-
+                    String destinationPath;
+                    if (LocalRB.Checked)
+                    {
+                        destinationPath = Path.Combine(CheminDestTB.Text, fileName); // Créer le chemin de destination complet
+                    }
+                    else
+                    {
+                        destinationPath = Path.Combine(PathSFTPTB.Text, fileName);
+                    }
                     // On démarre un Thread pour que la copie se fasse sur le côté
                     Thread thread = new Thread(() => sendFile(fileName, file, destinationPath));
                     thread.Start();
@@ -295,12 +316,31 @@ namespace FileLiveTransfer
                             client.CreateDirectory(remoteDirectory);
                         }
 
-                        using (var fileStream = new FileStream(pathFile, FileMode.Open))
+                        // Verification si le fichier que l'on souhaite copier est déjà dans le NAS
+                        var files = client.ListDirectory(remoteDirectory);
+                        bool fileExists = false;
+                        foreach (var file in files)
                         {
-                            // Copiez le fichier local sur le serveur distant
-                            client.UploadFile(fileStream, destinationPath);
+                            if (file.Name == fileName)
+                            {
+                                fileExists = true;
+                                break;
+                            }
                         }
 
+                        if (fileExists)
+                        {
+                            DebugLog("--- Le fichier '"+fileName+"' existe déjà sur le répertoire distant");
+                        }
+                        else
+                        {
+                            DebugLog("---- Fichier non présent sur le serveur distant, début de la copie");
+                            using (var fileStream = new FileStream(pathFile, FileMode.Open))
+                            {
+                                // Copiez le fichier local sur le serveur distant
+                                client.UploadFile(fileStream, destinationPath);
+                            }
+                        }
                         client.Disconnect();
                     }
 
@@ -311,7 +351,7 @@ namespace FileLiveTransfer
                     DebugLog("Une erreur avec le fichier '" + fileName + "' s'est produite : " + ex.Message);
                 }
             }
-            DebugLog("-- Fin de la copie du fichier '"+ fileName +"'");
+            DebugLog("-- Fin de la copie du fichier '" + fileName + "'");
         }
 
         private void StopButton_Click(object sender, EventArgs e)
@@ -319,12 +359,21 @@ namespace FileLiveTransfer
             StopButton.Enabled = false;
             StartButton.Enabled = true;
             this.timerCheckFile.Stop();
+
+            NasDistanceRB.Enabled = true;
+            LocalRB.Enabled = true;
+            TimerValueCB.Enabled = true;
+            TimeTB.Enabled = true;
+            CheminSourceTB.Enabled = true;
+            switchMode();
+            
         }
 
         private void CleanMemoryButton_Click(object sender, EventArgs e)
         {
             this.alreadySentFiles.Clear();
         }
+
 
     }
 

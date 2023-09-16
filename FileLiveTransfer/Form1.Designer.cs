@@ -267,6 +267,7 @@
             // 
             PasswordSFTPTB.Location = new Point(106, 81);
             PasswordSFTPTB.Name = "PasswordSFTPTB";
+            PasswordSFTPTB.PasswordChar = '*';
             PasswordSFTPTB.Size = new Size(186, 23);
             PasswordSFTPTB.TabIndex = 8;
             // 
